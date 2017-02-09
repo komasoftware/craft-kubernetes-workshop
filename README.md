@@ -1,3 +1,52 @@
+Corrections to be made :
+
+> gcloud container clusters get-credentials <clustername>
+> gcloud config set container/cluster <clustername>
+
+> kubectl get pods (to check if connection works, returns empty list)
+After that, the code lab should work fine
+
+> kubectl delete services/monolith
+> kubectl create -f services/monolith.yaml
+
+Insert your secret before deployment of the frontend
+> kubectl create secret tls tls-secrets --cert=tls/cert.pem --key=tls/key.pm
+
+
+Config map :
+
+upstream hello {
+    server hello.default.svc.cluster.local;
+}
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://hello;
+    }
+
+}
+Frontend service 
+kind: Service
+apiVersion: v1
+metadata:
+  name: "frontend"
+spec:
+  selector:
+    app: "frontend"
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+
+
+
+
+
+
+
 # Craft Kubernetes Workshop
 
 In this workshop you will learn how to:
